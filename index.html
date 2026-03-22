@@ -124,16 +124,11 @@
             resultContainer.classList.add('hidden');
 
             try {
-                const response = await fetch('https://gotiny.cc/api', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ input: url })
-                });
+                // Usando a API do TinyURL via GET, que é mais permissiva com CORS no navegador
+                const response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(url)}`);
 
-                const data = await response.json();
-
-                if (response.ok && data.length > 0) {
-                    currentShortUrl = `https://gotiny.cc/${data[0].code}`;
+                if (response.ok) {
+                    currentShortUrl = await response.text();
                     shortUrlDisplay.textContent = currentShortUrl;
                     openLink.href = currentShortUrl;
                     resultContainer.classList.remove('hidden');
@@ -141,7 +136,7 @@
                     showError('Ocorreu um erro ao encurtar o link. Verifique a URL.');
                 }
             } catch (err) {
-                showError('Erro de conexão. Tente novamente mais tarde.');
+                showError('Erro de conexão. A API pode estar temporariamente inacessível.');
             } finally {
                 setLoading(false);
             }
