@@ -1,0 +1,5 @@
+{
+  "name": "CleanShort - Link Shortener",
+  "description": "A clean and simple link shortener using the CleanURI API.",
+  "requestFramePermissions": []
+}
