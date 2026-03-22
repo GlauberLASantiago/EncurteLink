@@ -19,20 +19,21 @@ export default function App() {
     setCopied(false);
 
     try {
-      const response = await fetch('/api/shorten', {
+      const response = await fetch('https://gotiny.cc/api', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ input: url }),
       });
 
       const data = await response.json();
 
-      if (response.ok) {
-        setShortUrl(data.result_url);
+      if (response.ok && data.length > 0) {
+        const code = data[0].code;
+        setShortUrl(`https://gotiny.cc/${code}`);
       } else {
-        setError(data.error || 'Ocorreu um erro ao encurtar o link.');
+        setError('Ocorreu um erro ao encurtar o link. Verifique a URL.');
       }
     } catch (err) {
       setError('Erro de conexão. Tente novamente mais tarde.');
